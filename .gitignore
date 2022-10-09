@@ -1,8 +1,8 @@
 /venv/
 /media
-/prodenv/
+/prodenv/re
 .env
-
+.env.prod
 
 # Django #
 *.log
