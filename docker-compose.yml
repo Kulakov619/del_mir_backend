@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - "7777:7777"
+    env_file:
+      - .env
+
+  redis:
+    image: 'redis'
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./:/usr/src/redis
+
