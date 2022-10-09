@@ -1,9 +1,6 @@
 /venv/
 /media
-/profiles_app/migrations
-/users_app/migrations
-/constructor/migrations
-/portal/migrations
+/authcore/migrations
 .env
 
 
