@@ -1,7 +1,6 @@
 /venv/
 /media
-/authcore/migrations
-.env
+/prodenv/
 
 
 # Django #
