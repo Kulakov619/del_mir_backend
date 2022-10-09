@@ -1,6 +1,7 @@
 /venv/
 /media
 /prodenv/
+.env
 
 
 # Django #
@@ -102,8 +103,6 @@ celerybeat-schedule.*
 *.sage.py
 
 # Environments
-../del_mir_backend/.env
-.env.prod
 .venv
 env/
 venv/
