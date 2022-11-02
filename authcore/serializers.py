@@ -150,7 +150,7 @@ class OTPSerializer(serializers.Serializer):
         if not user:
             if attrs["is_login"]:
                 raise NotFound(_("Пользователь не найден"))
-            if attrs["id_mob"]:
+            elif "id_mob" in attrs.keys():
                 dm = self.get_mobile(attrs.get("id_mob"))
                 if not dm:
                     raise serializers.ValidationError(
