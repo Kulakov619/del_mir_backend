@@ -97,7 +97,6 @@ class UserSerializer(serializers.ModelSerializer):
             "mobile",
             "address",
             "dop_mobile",
-            "date_joined"
         )
 
 
