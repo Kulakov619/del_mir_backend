@@ -168,22 +168,7 @@ def generate_otp(prop: str, value: str) -> OTPValidation:
 
 
 def send_otp(value: str, otpobj: OTPValidation, recip: str) -> Dict:
-    """
-    This function sends OTP to specified value.
-    Parameters
-    ----------
-    value: str
-        This is the value at which and for which OTP is to be sent.
-    otpobj: OTPValidation
-        This is the OTP or One Time Passcode that is to be sent to user.
-    recip: str
-        This is the recipient to whom EMail is being sent. This will be
-        deprecated once SMS feature is brought in.
 
-    Returns
-    -------
-
-    """
     otp: str = otpobj.otp
 
     if not datetime_passed_now(otpobj.reactive_at):
@@ -192,7 +177,7 @@ def send_otp(value: str, otpobj: OTPValidation, recip: str) -> Dict:
         )
 
     message = (
-        f"Ваш одноразовый пароль {otp}."
+        f"Ваш одноразовый пароль {otp}. "
         f"Не пересылайте его никому!"
     )
 
@@ -282,29 +267,14 @@ def check_validation(value: str) -> bool:
 
 
 def validate_otp(value: str, otp: int) -> bool:
-    """
-    This function is used to validate the OTP for a particular value.
-    It also reduces the attempt count by 1 and resets OTP.
-    Parameters
-    ----------
-    value: str
-        This is the unique entry for which OTP has to be validated.
-    otp: int
-        This is the OTP that will be validated against one in Database.
-
-    Returns
-    -------
-    bool: True, if OTP is validated
-    """
     try:
-        # Try to get OTP Object from Model and initialize data dictionary
         otp_object: OTPValidation = OTPValidation.objects.get(
             destination=value, is_validated=False
         )
     except OTPValidation.DoesNotExist:
         raise NotFound(
             detail=_(
-                "Код уже не аактивен или деактивирован."
+                "Код уже не активен или деактивирован."
                 "Пожалуйста, отправьте код снова."
             )
         )

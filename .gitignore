@@ -1,6 +1,6 @@
 /venv/
 /media
-/prodenv/re
+/prodenv/
 .env
 .env.prod
 

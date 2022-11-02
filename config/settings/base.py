@@ -151,7 +151,7 @@ USER_SETTINGS = {
         'LENGTH': 7,
         'ALLOWED_CHARS': '1234567890',
         'VALIDATION_ATTEMPTS': 3,
-        'SUBJECT': 'OTP for Verification',
+        'SUBJECT': 'Одноразовый пароль',
         'COOLING_PERIOD': 3
     },
     'MOBILE_VALIDATION': True,

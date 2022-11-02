@@ -32,7 +32,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name=_("email address"), unique=True)
     mobile = models.CharField(
         verbose_name=_("mobile number"),
-        max_length=150,
+        max_length=12,
         unique=True,
         null=True,
         blank=True,
@@ -147,14 +147,30 @@ class OTPValidation(models.Model):
 
 class Address(TimeStampedMixin):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    address = models.CharField(_('адрес'), max_length=255)
+    sity = models.CharField(_('город'), max_length=255)
+    avenue = models.CharField(_('улица'), max_length=255)
+    d = models.CharField(_('дом'), max_length=10)
+    kv = models.CharField(_('квартира'), max_length=10, blank=True, null=True)
 
     class Meta:
         verbose_name = _('address')
         verbose_name_plural = _('addresses')
+        ordering = ['id', ]
 
     def __str__(self):
-        return self.address
+        if self.kv or self.kv != '':
+            return f"{self.sity}, {self.avenue} {self.d}, кв. {self.kv}"
+        else:
+            return f"{self.sity}, {self.avenue} {self.d}"
+
+
+# class DefaultAddress(TimeStampedMixin):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True)
+#
+#     class Meta:
+#         verbose_name = _('адрес по умолчанию')
+#         verbose_name_plural = _('адреса по умолчанию')
 
 
 class DopMobile(TimeStampedMixin):
@@ -171,6 +187,7 @@ class DopMobile(TimeStampedMixin):
     class Meta:
         verbose_name = _('user phone')
         verbose_name_plural = _('user phones')
+        ordering = ['id', ]
 
     def __str__(self):
         return self.mobile

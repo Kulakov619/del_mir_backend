@@ -8,46 +8,24 @@ from .models import AuthTransaction
 from .models import OTPValidation
 from .models import Role
 from .models import User
+from .models import Address
+from .models import DopMobile
 
 
-class DRFUserAdmin(UserAdmin):
-    """
-    Overrides UserAdmin to show fields name & mobile and remove fields:
-    first_name, last_name
-    """
+class UsrAdrInline(admin.TabularInline):
+    model = Address
+    extra = 0
 
-    fieldsets = (
-        (None, {"fields": ("username", "password")}),
-        (_("Personal info"), {"fields": ("name", "profile_image", "email", "mobile")}),
-        (
-            _("Permissions"),
-            {
-                "fields": (
-                    "is_active",
-                    "is_staff",
-                    "is_superuser",
-                    "groups",
-                    "user_permissions",
-                )
-            },
-        ),
-        (
-            _("Important dates"),
-            {"fields": ("last_login", "date_joined", "update_date")},
-        ),
-    )
-    add_fieldsets = (
-        (
-            None,
-            {
-                "classes": ("wide",),
-                "fields": ("username", "email", "mobile", "password1", "password2"),
-            },
-        ),
-    )
+
+class UsrDmInline(admin.TabularInline):
+    model = DopMobile
+    extra = 0
+
+
+class DRFUserAdmin(admin.ModelAdmin):
+    inlines = (UsrAdrInline, UsrDmInline, )
     list_display = ("username", "email", "name", "mobile", "is_staff")
     search_fields = ("username", "name", "email", "mobile")
-    readonly_fields = ("date_joined", "last_login", "update_date")
 
 
 class OTPValidationAdmin(admin.ModelAdmin):
@@ -72,7 +50,6 @@ class AuthTransactionAdmin(admin.ModelAdmin):
 
 admin.site.unregister(Group)
 admin.site.register(Role, GroupAdmin)
-
 admin.site.register(User, DRFUserAdmin)
 admin.site.register(OTPValidation, OTPValidationAdmin)
 admin.site.register(AuthTransaction, AuthTransactionAdmin)
