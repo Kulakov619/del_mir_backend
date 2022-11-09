@@ -2,6 +2,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.validators import EmailValidator
 from django.core.validators import ValidationError
 from django.utils.text import gettext_lazy as _
+from rest_framework.fields import CurrentUserDefault
 from rest_framework import serializers
 from rest_framework.exceptions import NotFound
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -38,9 +39,25 @@ class AddressSerializer(serializers.ModelSerializer):
             'avenue',
             'd',
             'kv',
+            'is_default',
             'user'
         )
-        read_only_fields = ('id', )
+        read_only_fields = ('id', 'is_default')
+
+
+class AddressSetSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+
+    def validate(self, attrs):
+        try:
+            a = Address.objects.get(pk=attrs.get("id"))
+        except Address.DoesNotExist:
+            a = None
+        if not a:
+            raise serializers.ValidationError(_("адреса с таким id не существует"))
+        else:
+            return attrs
+
 
 
 class UserSerializer(serializers.ModelSerializer):

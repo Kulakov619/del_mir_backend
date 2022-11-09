@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.utils import timezone
 from django.utils.text import gettext_lazy as _
+from django.shortcuts import get_object_or_404
 import json
 from django.http import HttpResponse
+from rest_framework.decorators import action
 from rest_framework import status, generics, mixins
 from rest_framework.exceptions import APIException
 from rest_framework.exceptions import ValidationError
@@ -29,6 +31,7 @@ from .serializers import OTPLoginRegisterSerializer
 from .serializers import OTPSerializer
 from .serializers import PasswordResetSerializer
 from .serializers import UserSerializer, DopMobileSerializer, AddressSerializer
+from .serializers import AddressSetSerializer
 from .utils import check_unique
 from .utils import generate_otp
 from .utils import get_client_ip
@@ -291,4 +294,45 @@ class AddressView(mixins.RetrieveModelMixin,
     permission_classes = (IsUserChUpdate, )
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
+
+    @action(methods=['get'], detail=False)
+    def address(self, request):
+        address = Address.objects.filter(user=request.user, is_default=False)
+        if Address.objects.filter(user=request.user, is_default=True):
+            def_address = Address.objects.filter(user=request.user, is_default=True)[0]
+            return Response({
+                'default_address': {"id": def_address.id, "name": str(def_address)},
+                'addresses': [{"id": el.id, "name": str(el)} for el in address]
+            })
+        else:
+            return Response({
+                'default_address': None,
+                'addresses': [{"id": el.id, "name": str(el)} for el in address]
+            })
+
+
+class AddressSetView(APIView):
+    serializer_class = AddressSetSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            add = serializer.validated_data.get("id")
+            a = Address.objects.get(pk=add)
+            if a.user == request.user:
+                if Address.objects.filter(user=request.user, is_default=True):
+                    def_address = Address.objects.filter(user=request.user, is_default=True)
+                    for el in def_address:
+                        el.is_default = False
+                        el.save()
+                a.is_default = True
+                a.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(
+                    {"detail": "это адрес другого пользователя"}, status=status.HTTP_400_BAD_REQUEST
+                )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 

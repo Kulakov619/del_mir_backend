@@ -151,26 +151,18 @@ class Address(TimeStampedMixin):
     avenue = models.CharField(_('улица'), max_length=255)
     d = models.CharField(_('дом'), max_length=10)
     kv = models.CharField(_('квартира'), max_length=10, blank=True, null=True)
+    is_default = models.BooleanField(verbose_name=_("адрес по умолчанию"), default=False)
 
     class Meta:
         verbose_name = _('address')
         verbose_name_plural = _('addresses')
-        ordering = ['id', ]
+        ordering = ['is_default', ]
 
     def __str__(self):
         if self.kv or self.kv != '':
             return f"{self.sity}, {self.avenue} {self.d}, кв. {self.kv}"
         else:
             return f"{self.sity}, {self.avenue} {self.d}"
-
-
-# class DefaultAddress(TimeStampedMixin):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True)
-#
-#     class Meta:
-#         verbose_name = _('адрес по умолчанию')
-#         verbose_name_plural = _('адреса по умолчанию')
 
 
 class DopMobile(TimeStampedMixin):
