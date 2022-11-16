@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'drf_yasg',
 
     'authcore',
+    'head_content',
 ]
 
 MIDDLEWARE = [

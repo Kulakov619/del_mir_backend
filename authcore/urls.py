@@ -6,7 +6,6 @@ router = routers.SimpleRouter()
 router.register(r'user', views.UserView)
 router.register(r'user_dm', views.DmView)
 router.register(r'user_adr', views.AddressView)
-# router.register(r'address_list', views.AddressListView)
 
 urlpatterns = [
     path("otp/", views.OTPView.as_view(), name="login"),
