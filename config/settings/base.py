@@ -19,6 +19,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'drf_yasg',
+    'cml',
 
     'authcore',
     'head_content',

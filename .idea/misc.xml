@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/cml/migrations/0001_initial.py" />
+  </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.8 (del_mir_backend)" project-jdk-type="Python SDK" />
   <component name="accountSettings">
     <option name="activeRegion" value="us-east-1" />
