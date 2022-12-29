@@ -11,7 +11,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('authcore.urls')),
     path('api/head/', include('head_content.urls')),
-    path(r'^cml/', include('cml.urls')),
+    re_path(r'^cml/', include('cml.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
